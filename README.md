@@ -50,7 +50,7 @@ In this case, the path to the OU containing the chromebooks is `/Students/Studen
 In the apps script web editor go to 'Project settings' and scroll down to 'Script properties'. Add a new property called 'ou_path' and set the value to the path to your OU.
 
 #### Want to test it first?
-You could create an OU to test the script. Put a chromeos device in this OU and run the script. Afterwards, [undo the changes](https://github.com/Vlietland-College/AutoMoveOU-for-google-workspace/edit/master/README.md#undo-changes) and change the ou_path before running firstRun 'for real'. You can leave the other properties, they are overwritten by firstRun.
+You could create an OU to test the script. Put a chromeos device in this OU and run the script. Afterwards, [undo the changes](https://github.com/Vlietland-College/AutoMoveOU-for-google-workspace#undo-changes) and change the ou_path before running firstRun 'for real'. You can leave the other properties, they are overwritten by firstRun.
 
 ### Setting the calendar ID
 Find the ID of the Google calendar that the script should use. The ID can be found under 'Integrate calendar' in the calendar settings. Add a script property called 'calendar_id'. 
