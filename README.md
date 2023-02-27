@@ -97,6 +97,7 @@ Don't forget to either remove the debug property or set the value to false.
 In the script editor go to 'Triggers' and create a new trigger. Use the following settings:
 
 ![Screenshot 2023-02-27 at 14 05 03](https://user-images.githubusercontent.com/4431536/221571212-be08a3d5-4034-4fdd-8ba8-6fb96e53aa42.png)
+
 *If the timezone is not correct go to 'Project settings' and adjust the timezone before creating the trigger*
 
 The script will now run every morning.
