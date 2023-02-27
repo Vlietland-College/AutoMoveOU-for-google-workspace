@@ -50,7 +50,7 @@ In this case, the path to the OU containing the chromebooks is `/Students/Studen
 In the apps script web editor go to 'Project settings' and scroll down to 'Script properties'. Add a new property called 'ou_path' and set the value to the path to your OU.
 
 #### Want to test it first?
-You could create an OU to test the script. Put a chromeos device in this OU and run the script. Afterwards, [undo the changes](https://github.com/Vlietland-College/AutoMoveOU-for-google-workspace/edit/master/README.md#undo-changes) and change the ou_path before running firstRun 'for real'. You can leave the other properties, they are overwritten by firstRun.
+You could create an OU to test the script. Put a chromeos device in this OU and run the script. Afterwards, [undo the changes](https://github.com/Vlietland-College/AutoMoveOU-for-google-workspace#undo-changes) and change the ou_path before running firstRun 'for real'. You can leave the other properties, they are overwritten by firstRun.
 
 ### Setting the calendar ID
 Find the ID of the Google calendar that the script should use. The ID can be found under 'Integrate calendar' in the calendar settings. Add a script property called 'calendar_id'. 
@@ -97,6 +97,7 @@ Don't forget to either remove the debug property or set the value to false.
 In the script editor go to 'Triggers' and create a new trigger. Use the following settings:
 
 ![Screenshot 2023-02-27 at 14 05 03](https://user-images.githubusercontent.com/4431536/221571212-be08a3d5-4034-4fdd-8ba8-6fb96e53aa42.png)
+
 *If the timezone is not correct go to 'Project settings' and adjust the timezone before creating the trigger*
 
 The script will now run every morning.
