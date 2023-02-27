@@ -97,7 +97,7 @@ In the script editor go to 'Triggers' and create a new trigger. Use the followin
 The script will now run every morning.
 
 # Setting the policy
-Since policies are inherited you don't have to change the way you set the policies 
+Since policies are inherited you don't have to change the way you set the regular policies: I highly recommend you keep using the pre-existing OU (Student Chromebooks in our example) or a higher one to enforce policies. The few policies that should be different during the holidays are applied in the 'Vacation' OU. Do not enforce policies at either container or normal level unless you know what you're doing.
 
 
 # ZTE and enrollment
