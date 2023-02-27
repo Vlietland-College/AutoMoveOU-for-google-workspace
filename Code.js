@@ -73,7 +73,7 @@ function dailyCheck(){
     if(current_parent_id !== props.vacation_id){
       //should switch to vacation
       console.info("Not in vacation and should be")
-      res = setParentOU(child_org_unit.orgUnitPath, props.vacation_id)
+      res = setParentOU(props.container_id, props.vacation_id)
       console.info("Moved ou to vacation")
 
     }
@@ -88,7 +88,7 @@ function dailyCheck(){
     if(current_parent_id !== props.normal_id){
       //in vacation and shouldnt be
       console.info("In vacation and shouldnt be")
-      res = setParentOU(child_org_unit.orgUnitPath, props.normal_id)
+      res = setParentOU(props.container_id, props.normal_id)
       console.info("Moved ou to Normal")
 
     }
@@ -177,7 +177,7 @@ function isEventVacation(event){
 }
 
 function setParentOU(child_ou_id, parent_ou_id){
-  res = AdminDirectory.Orgunits.update({parentOrgUnitId:parent_ou_id}, "my_customer", child_ou_id.slice(1))
+  res = AdminDirectory.Orgunits.update({parentOrgUnitId:parent_ou_id}, "my_customer", child_ou_id)
   return res
 }
 
