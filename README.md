@@ -32,7 +32,7 @@ After a couple of days being p*ssed about the fact that a lot of policies cant b
 Clone the git repo and use [clasp](https://developers.google.com/apps-script/guides/clasp) to create an appsscript file in your google account. Push the contents of the script using clasp.
 
 ### Manually
-[Create a script from Google Drive](https://developers.google.com/apps-script/guides/projects) and copy the contents of Code.js into the editor. Go to Project Settings and enable "Show "appsscript.json" manifest file in editor". Copy the contents of appscript.json from the repo to the editor. 
+[Create a script from Google Drive](https://developers.google.com/apps-script/guides/projects) and copy the contents of Code.gs into the editor. Go to Project Settings and enable "Show "appsscript.json" manifest file in editor". Copy the contents of appscript.json from the repo to the editor. 
 
 ## Before the first run
 
