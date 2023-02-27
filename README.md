@@ -49,6 +49,9 @@ In this case, the path to the OU containing the chromebooks is `/Students/Studen
 
 In the apps script web editor go to 'Project settings' and scroll down to 'Script properties'. Add a new property called 'ou_path' and set the value to the path to your OU.
 
+#### Want to test it first?
+You could create an OU to test the script. Put a chromeos device in this OU and run the script. Afterwards, [undo the changes](https://github.com/Vlietland-College/AutoMoveOU-for-google-workspace/edit/master/README.md#undo-changes) and change the ou_path before running firstRun 'for real'. You can leave the other properties, they are overwritten by firstRun.
+
 ### Setting the calendar ID
 Find the ID of the Google calendar that the script should use. The ID can be found under 'Integrate calendar' in the calendar settings. Add a script property called 'calendar_id'. 
 
@@ -87,6 +90,8 @@ Every ChromeOS device placed under 'Student Chromebooks' is moved to the contain
 This is optional but recommended. 
 
 Add a script property called 'debug' with 'true' as value. Add a second property called 'mock_date'. The value of this property should be a DateTime string formatted according to the [ISO 8601 format](https://tc39.es/ecma262/#sec-date-time-string-format), so for example `2023-04-27T04:10`. Set this date to a date that has an event that matches against your regular expression and run 'dailyCheck'. The container OU should be moved to the 'vacation' OU. Set the date to a non-vacation day, run dailyCheck and verify the OU has been placed back into 'Regular'.
+
+Don't forget to either remove the debug property or set the value to false.
  
 ## Creating the trigger
 In the script editor go to 'Triggers' and create a new trigger. Use the following settings:
@@ -97,11 +102,12 @@ In the script editor go to 'Triggers' and create a new trigger. Use the followin
 The script will now run every morning.
 
 # Setting the policy
-Since policies are inherited you don't have to change the way you set the policies 
+Since policies are inherited you don't have to change the way you set the regular policies: I highly recommend you keep using the pre-existing OU (Student Chromebooks in our example) or a higher one to enforce policies. The few policies that should be different during the holidays are applied in the 'Vacation' OU. Do not enforce policies at either container or normal level unless you know what you're doing.
 
 
 # ZTE and enrollment
 If you use [zero-touch enrollment tokens](https://support.google.com/chrome/a/answer/10130175?hl=en) you need to create a new token for the container ou. Also change enrollment settings to make sure new student-devices are enrolled in the correct OU.
 
-
+# Undo changes
+There is a function named 'undoChanges' that places all chromeos devices back in the OU defined during firstRun and removes the underlying ou structure.
 
