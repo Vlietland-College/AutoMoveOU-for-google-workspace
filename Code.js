@@ -1,9 +1,7 @@
-
-let debug = true;
-let mock_date = new Date(2023, 3,23);
-
 var props = null;
 const scriptProperties = PropertiesService.getScriptProperties();
+let debug = scriptProperties.getProperty('debug') == "true" ? true : false
+
 function getProps(){
   if(props !== null){
     return props;
@@ -41,23 +39,28 @@ function dailyCheck(){
   let child_org_unit = AdminDirectory.Orgunits.get("my_customer", props.container_id)
 
   var now = new Date();
-  if(debug && mock_date){
-    now = mock_date;
+
+  if(debug){
+    let mock_date = scriptProperties.getProperty('mock_date');
+    if(mock_date){
+      now = new Date(mock_date);
+    }
   }
   var twoHoursFromNow = new Date(now.getTime() + (2 * 60 * 60 * 1000));
-
+  console.log(now.toDateString())
   let events = calendar.getEvents(now, twoHoursFromNow);
   let is_vacation_day = false;
 
   if(events){
+
     for(let event of events){
       is_vacation_day = isEventVacation(event)
 
       if(is_vacation_day){
-            if(debug){console.log("Vacation found %s", event.getTitle())}
+        if(debug){console.log("Vacation found %s", event.getTitle())}
 
         break;
-        }
+      }
     }
   }
   else{
@@ -86,7 +89,7 @@ function dailyCheck(){
       //in vacation and shouldnt be
       console.info("In vacation and shouldnt be")
       res = setParentOU(child_org_unit.orgUnitPath, props.normal_id)
-       console.info("Moved ou to Normal")
+      console.info("Moved ou to Normal")
 
     }
     else{
@@ -99,7 +102,7 @@ function dailyCheck(){
 function firstRun(){
   let ou_path =  scriptProperties.getProperty('ou_path').slice(1);
   try {
-  // statements to try
+    // statements to try
     var container_org_unit = AdminDirectory.Orgunits.get("my_customer", ou_path)
 
   } catch (e) {
@@ -115,7 +118,7 @@ function firstRun(){
   scriptProperties.setProperty('vacation_id', vacation_orgunit.orgUnitId);
   console.log("Created vacation OU")
 
-  let normal_orgunit = AdminDirectory.Orgunits.insert({name: "Normal", description: "Contains the OU that contains the chromeosdevices during regular weeks. Created by the script that moves the devices.",parentOrgUnitId: container_org_unit.orgUnitId}, "my_customer")
+  let normal_orgunit = AdminDirectory.Orgunits.insert({name: "Regular", description: "Contains the OU that contains the chromeosdevices during regular weeks. Created by the script that moves the devices.",parentOrgUnitId: container_org_unit.orgUnitId}, "my_customer")
   scriptProperties.setProperty('normal_id', normal_orgunit.orgUnitId);
   console.log("Created normal OU")
 
@@ -168,6 +171,7 @@ function listChromeOsDevices(orgunit_id) {
 }
 
 function isEventVacation(event){
+
   return props.regex_matcher.test(event.getTitle())
 
 }
@@ -214,6 +218,6 @@ function undoChanges(){
 }
 
 function printOU(orgunit){
-    console.log(orgunit)
-    console.log('%s [%s] (%s)', orgunit.name, orgunit.orgUnitPath, orgunit.orgUnitId);
+  console.log(orgunit)
+  console.log('%s [%s] (%s)', orgunit.name, orgunit.orgUnitPath, orgunit.orgUnitId);
 }
