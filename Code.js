@@ -12,9 +12,9 @@ function getProps(){
 
   props = {
     "regex_matcher": new RegExp(scriptProperties.getProperty('regex_matcher')),
-    "ou_id": scriptProperties.getProperty('ou_id'),
-    "normal_id": scriptProperties.getProperty('normal_id'),
     "container_id": scriptProperties.getProperty('container_id'),
+    "normal_id": scriptProperties.getProperty('normal_id'),
+    "top_ou_id": scriptProperties.getProperty('top_ou_id'),
     "vacation_id": scriptProperties.getProperty('vacation_id'),
     "calendar_id": scriptProperties.getProperty('calendar_id')
   }
@@ -26,9 +26,9 @@ function getProps(){
 function dailyCheck(){
   let props = getProps()
 
-  if(debug){console.log("ou: '%s' normal: '%s' vacation: '%s' calendar: %s", props.ou_id, props.normal_id, props.vacation_id, props.calendar_id)}
+  if(debug){console.log("ou: '%s' normal: '%s' vacation: '%s' calendar: %s", props.container_id, props.normal_id, props.vacation_id, props.calendar_id)}
 
-  if(props.ou_id === null || props.normal_id === null || props.vacation_id === null || props.calendar_id === null || props.regex_matcher.source === "null"){
+  if(props.container_id === null || props.normal_id === null || props.vacation_id === null || props.calendar_id === null || props.regex_matcher.source === "null"){
 
 
 
@@ -38,7 +38,7 @@ function dailyCheck(){
   }
 
   let calendar = CalendarApp.getCalendarById(props.calendar_id)
-  let child_org_unit = AdminDirectory.Orgunits.get("my_customer", props.ou_id)
+  let child_org_unit = AdminDirectory.Orgunits.get("my_customer", props.container_id)
 
   var now = new Date();
   if(debug && mock_date){
@@ -107,7 +107,7 @@ function firstRun(){
     return;
   }
 
-  scriptProperties.setProperty('container_id', container_org_unit.orgUnitId);
+  scriptProperties.setProperty('top_ou_id', container_org_unit.orgUnitId);
 
 
   // make the normal and vacation ou's
@@ -119,13 +119,9 @@ function firstRun(){
   scriptProperties.setProperty('normal_id', normal_orgunit.orgUnitId);
   console.log("Created normal OU")
 
-  let target_orgunit = AdminDirectory.Orgunits.insert({name: container_org_unit.name, description: "Contains the actual chromedevices that should be moved by the script. This OU is moved by the script.",parentOrgUnitId: normal_orgunit.orgUnitId}, "my_customer")
-  scriptProperties.setProperty('ou_id', target_orgunit.orgUnitId);
+  let target_orgunit = AdminDirectory.Orgunits.insert({name: container_org_unit.name + " Container", description: "Contains the actual chromedevices that should be moved by the script. This OU is moved by the script.",parentOrgUnitId: normal_orgunit.orgUnitId}, "my_customer")
+  scriptProperties.setProperty('container_id', target_orgunit.orgUnitId);
   console.log("Created sub OU")
-
-  //rename ou
-  let res = AdminDirectory.Orgunits.update({name:container_org_unit.name + " Container"}, "my_customer", container_org_unit.orgUnitId)
-  console.log("Renamed container ou")
 
   moveDevicesFromContainer(container_org_unit.orgUnitId, target_orgunit.orgUnitId);
 
@@ -204,18 +200,15 @@ function undoChanges(){
   let props = getProps()
 
   console.log("Resetting changes")
-  moveDevicesFromContainer(props.ou_id, props.container_id)
+  moveDevicesFromContainer(props.container_id, props.top_ou_id)
 
-  let container_name = AdminDirectory.Orgunits.get("my_customer", props.ou_id).name
   console.log("Preparing to remove lower ou..")
-  AdminDirectory.Orgunits.remove("my_customer", props.ou_id)
+  AdminDirectory.Orgunits.remove("my_customer", props.container_id)
   console.log("Preparing to remove vacation ou..")
   AdminDirectory.Orgunits.remove("my_customer", props.vacation_id)
   console.log("Preparing to remove normal ou..")
   AdminDirectory.Orgunits.remove("my_customer", props.normal_id)
 
-  console.log("Resetting container name")
-  AdminDirectory.Orgunits.update({name: container_name}, "my_customer", props.container_id)
 
 
 }
